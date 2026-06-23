@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Bikers Website</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+
+body{
+background:#f4f6fb;
+}
+
+
+header{
+height:80px;
+background:#2563eb;
+color:white;
+display:flex;
+justify-content:space-around;
+align-items:center;
+position:sticky;
+top:0;
+}
+
+
+.logo{
+font-size:30px;
+font-weight:bold;
+}
+
+
+
+button{
+
+padding:12px 25px;
+border:none;
+border-radius:25px;
+background:#f97316;
+color:white;
+cursor:pointer;
+transition:.3s;
+
+}
+
+
+button:hover{
+transform:scale(1.1);
+}
+
+
+
+.hero{
+
+height:75vh;
+
+background:
+linear-gradient(
+rgba(0,0,0,.5),
+rgba(0,0,0,.5)
+),
+url("https://images.unsplash.com/photo-1558981806-ec527fa84c39");
+
+background-size:cover;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+color:white;
+text-align:center;
+
+}
+
+
+.hero h1{
+font-size:60px;
+}
+
+
+
+.popup{
+
+position:fixed;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%) scale(0);
+
+background:white;
+
+width:350px;
+
+padding:25px;
+
+border-radius:20px;
+
+box-shadow:0 0 20px gray;
+
+transition:.3s;
+
+z-index:20;
+
+}
+
+
+.show{
+transform:translate(-50%,-50%) scale(1);
+}
+
+
+
+input{
+
+width:100%;
+padding:12px;
+margin:8px 0;
+
+border-radius:10px;
+border:1px solid gray;
+
+}
+
+
+
+.profile{
+
+display:none;
+
+position:fixed;
+
+right:20px;
+
+top:90px;
+
+background:white;
+
+padding:20px;
+
+border-radius:15px;
+
+box-shadow:0 0 20px gray;
+
+z-index:15;
+
+}
+
+
+
+
+
+.video{
+
+padding:50px;
+text-align:center;
+
+}
+
+
+
+video{
+
+width:1000px;
+border-radius:50px;
+
+}
+
+
+
+
+.brands{
+
+padding:40px;
+text-align:center;
+
+}
+
+
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(120px,1fr));
+
+gap:20px;
+
+margin-top:30px;
+
+}
+
+
+
+.brand{
+
+background:white;
+
+padding:20px;
+
+border-radius:15px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+
+.brand:hover{
+
+background:#2563eb;
+color:white;
+
+transform:translateY(-10px);
+
+}
+
+
+
+
+.bikes{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(240px,1fr));
+
+gap:25px;
+
+padding:40px;
+
+}
+
+
+
+.bike{
+
+background:white;
+
+padding:20px;
+
+border-radius:20px;
+
+box-shadow:0 0 15px #aaa;
+
+transition:.3s;
+
+}
+
+
+.bike:hover{
+
+transform:scale(1.05);
+
+}
+
+
+
+.bike img{
+
+width:100%;
+
+height:180px;
+
+object-fit:cover;
+
+border-radius:15px;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+
+<div class="logo">
+🏍 Bikers
+</div>
+
+
+<div>
+
+<button onclick="openSignup()">
+Signup
+</button>
+
+
+<button onclick="openLogin()">
+Login
+</button>
+
+
+</div>
+
+
+</header>
+
+
+
+
+
+<section class="hero">
+
+<div>
+
+<h1>Rent Your Dream Bike</h1>
+
+<p>Fast • Safe • Easy</p>
+
+</div>
+
+</section>
+
+
+
+
+
+<div class="popup" id="signupBox">
+
+
+<h2>Signup</h2>
+
+
+<input id="sname" placeholder="Name">
+
+<input id="sphone" placeholder="Phone">
+
+
+<button onclick="otpGenerate()">
+Generate OTP
+</button>
+
+
+<p id="otpShow"></p>
+
+
+<input id="otpInput" placeholder="OTP">
+
+
+<input id="spass" placeholder="Password">
+
+
+<button onclick="signupUser()">
+Create Account
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="popup" id="loginBox">
+
+
+<h2>Login</h2>
+
+
+<input id="lphone" placeholder="Phone">
+
+
+<input id="lpass" placeholder="Password">
+
+
+<button onclick="loginUser()">
+Login
+</button>
+
+
+<p id="loginMsg"></p>
+
+
+</div>
+
+
+
+
+
+<div class="profile" id="profile">
+
+<h3>Profile</h3>
+
+<p id="profileData"></p>
+
+</div>
+
+
+
+
+
+
+
+<section class="video">
+
+<h2>Bike Video</h2>
+
+<video autoplay muted loop>
+
+<source src="bike.mp4">
+
+</video>
+
+
+</section>
+
+
+
+
+
+
+
+<section class="brands">
+
+
+<h2>Select Brand</h2>
+
+
+<div class="grid">
+
+
+<div class="brand" onclick="filterBike('all')">⭐All</div>
+
+<div class="brand" onclick="filterBike('KTM')">KTM</div>
+
+<div class="brand" onclick="filterBike('Yamaha')">Yamaha</div>
+
+<div class="brand" onclick="filterBike('Honda')">Honda</div>
+
+<div class="brand" onclick="filterBike('Royal')">Royal</div>
+
+<div class="brand" onclick="filterBike('Bajaj')">Bajaj</div>
+
+</div>
+
+
+</section>
+<div class="bikes" id="bikeContainer"></div>
+
+<script>
+
+let bikes = [
+    {
+name:"KTM Duke 125",
+brand:"KTM",
+img:"https://tse1.mm.bing.net/th/id/OIP.2plVyYksnz-1P8b-M5-gnwHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"KTM Duke 200",
+brand:"KTM",
+img:"https://tse2.mm.bing.net/th/id/OIP.2eFIOfZqVVjLFSNbC9GC5wHaEd?pid=Api&h=220&P=0"
+},
+{
+name:"KTM Duke 250",
+brand:"KTM",
+img:"https://tse3.mm.bing.net/th/id/OIP.UdOBPm9vjfhbyqcqooLN0wHaEK?pid=Api&h=220&P=0"
+},
+{
+name:"KTM Duke 390",
+brand:"KTM",
+img:"https://tse3.mm.bing.net/th/id/OIP.X8r7U89gRwNyvryuGhBEIwHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"KTM RC 125",
+brand:"KTM",
+img:"https://tse4.mm.bing.net/th/id/OIP.M9zmgaMQHahZMuxlomPCvwHaHR?pid=Api&h=220&P=0"
+},
+{
+name:"KTM RC 200",
+brand:"KTM",
+img:"https://tse3.mm.bing.net/th/id/OIP.Q-VUWftOd-wNOZWFkDLyYwHaEK?pid=Api&h=220&P=0"
+},
+
+{
+name:"KTM RC 390",
+brand:"KTM",
+img:"https://tse2.mm.bing.net/th/id/OIP.4G2MxvI0VR6jPyo1wsuV8wHaEK?pid=Api&h=220&P=0"
+},
+
+{
+name:"Yamaha R15",
+brand:"Yamaha",
+img:"https://tse3.mm.bing.net/th/id/OIP.2jHJDe33lxhDhKH4PHf7NAHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"Yamaha Rx100",
+brand:"Yamaha",
+img:"https://tse3.mm.bing.net/th/id/OIP.9wnC1goFdGk7YJ9AfpWRIwHaEM?pid=Api&h=220&P=0"
+},
+{
+name:"Yamaha Fz-s",
+brand:"Yamaha",
+img:"https://cdn.bikedekho.com/processedimages/yamaha/2025-fz-s-fi/source/2025-fz-s-fi689c619bb1d64.jpg"
+},
+{
+name:"Yamaha MT15",
+brand:"Yamaha",
+img:"https://tse2.mm.bing.net/th/id/OIP.TUB2U_qr7PrPzCAS6LmgfAHaE8?pid=Api&h=220&P=0"
+},
+
+{
+name:"Honda CBR",
+brand:"Honda",
+img:"https://tse2.mm.bing.net/th/id/OIP.ICNw0q7HUKQPDx3rN1S4LQHaFj?pid=Api&h=220&P=0"
+},
+{
+name:"Honda SP125",
+brand:"Honda",
+img:"https://tse2.mm.bing.net/th/id/OIP.5s1EJ-r2pYMY_Wd7zU1KMAHaEK?pid=Api&h=220&P=0"
+},
+{
+name:"Unicorn",
+brand:"Honda",
+img:"https://tse3.mm.bing.net/th/id/OIP.Cf1Bi_acvtaZYjmSYQF9NwHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"Shine",
+brand:"Honda",
+img:"https://tse2.mm.bing.net/th/id/OIP.YEIIpKBtAu3ajiLSPG18NAHaFj?pid=Api&h=220&P=0"
+},
+{
+name:"HONDA SP 160",
+brand:"HONDA",
+img:"https://images.unsplash.com/photo-1615172282427-9a57ef2d142e?auto=format&fit=crop&w=600&q=80"
+},
+
+{
+name:"Dio",
+brand:"Honda",
+img:"https://tse2.mm.bing.net/th/id/OIP.8L01FoRI9TFrI7TGfEYuWwHaEK?pid=Api&h=220&P=0"
+},
+{
+name:"Activa 125",
+brand:"Honda",
+img:"https://tse2.mm.bing.net/th/id/OIP.s7nOnFMCSU1Txv2PdacI4AHaFj?pid=Api&h=220&P=0"
+},
+{
+name:"Activa 6G",
+brand:"Honda",
+img:"https://tse1.mm.bing.net/th/id/OIP.M--stdKk8bKjCOwYV0KVhwHaFj?pid=Api&h=220&P=0"
+},
+{
+name:"Grazia 125",
+brand:"Honda",
+img:"https://tse1.mm.bing.net/th/id/OIP.kpfZ2sJ3pNX9QtevmtxNFQHaEd?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Continental GT 650 ",
+brand:"Royal",
+img:"https://tse3.mm.bing.net/th/id/OIP.0imvz8TaYDZzBt_MxopF5gHaFj?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Continental GT 535 ",
+brand:"Royal",
+img:"https://tse2.mm.bing.net/th/id/OIP.P0vvwgmxE3WgZ2JLdO9ibQHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Shotgun 650",
+brand:"Royal",
+img:"https://tse4.mm.bing.net/th/id/OIP.CKExShjb-okofh40jOjWCQHaEK?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Interceptor 650",
+brand:"Royal",
+img:"https://tse3.mm.bing.net/th/id/OIP.M7MIH7wT5p79mT-Ql2ehtwHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Himalayan 411",
+brand:"Royal",
+img:"https://tse3.mm.bing.net/th/id/OIP.5iyy-1LZfAx28LI7Hf6IDgHaEK?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Thunderbird 500 ",
+brand:"Royal",
+img:"https://tse4.mm.bing.net/th/id/OIP.pgn4RZI31c4h5MvVpkhVUAHaFj?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Thunderbird 350 ",
+brand:"Royal",
+img:"https://tse1.mm.bing.net/th/id/OIP.-9M40Kk_zuTqv8gKtPU5IQHaE4?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Guerrilla 450",
+brand:"Royal",
+img:"https://tse1.mm.bing.net/th/id/OIP.bz8bfIikxic3yMXeAy93eQHaEc?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Hunter 350",
+brand:"Royal",
+img:"https://tse3.mm.bing.net/th/id/OIP.q8OIdaE57SUPcIkdM0efCgHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Bullet 650",
+brand:"Royal",
+img:"https://tse2.mm.bing.net/th/id/OIP.F7YXV_hnGhbf53GjJGIaMgHaEM?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Classic 650",
+brand:"Royal",
+img:"https://tse4.mm.bing.net/th/id/OIP.AMVu_CHZAIwVPFn_dN6DtQHaEc?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Goan Classic 350",
+brand:"Royal",
+img:"https://tse4.mm.bing.net/th/id/OIP.vTdUAx0x0xJai8CHH_w0zAHaD4?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Bullet 500",
+brand:"Royal",
+img:"https://tse2.mm.bing.net/th/id/OIP.YRsQWcfD9x81AmH_e-8TjwHaEL?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Bullet 350",
+brand:"Royal",
+img:"https://ic4.maxabout.us/autos/tw_india/R/2023/9/royal-enfield-bullet-350-side-view.jpg"
+},
+{
+name:"Royal Enfield classic 500",
+brand:"Royal",
+img:"https://tse2.mm.bing.net/th/id/OIP.SG-rV04nyGHePI6ntITe5AHaFW?pid=Api&h=220&P=0"
+},
+{
+name:"Royal Enfield Classic 350",
+brand:"Royal",
+img:"https://tse3.mm.bing.net/th/id/OIP.DTKqUFsK5-V7hdhGBdULdQHaFj?pid=Api&h=220&P=0"
+},
+{
+name:"Dominar 400 ABS ",
+brand:"Bajaj",
+img:"https://tse1.mm.bing.net/th/id/OIP.YPyq9-hVlvNa1XdLAVFZWAHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"Dominar 250",
+brand:"Bajaj",
+img:"https://up.yimg.com/ib/th/id/OIP.mDpz5YkBzuhKECK9mmpARgHaEK?pid=Api&rs=1&c=1&qlt=95&w=203&h=114"
+},
+{
+name:"Avenger 220 cruise",
+brand:"Bajaj",
+img:"https://stat.overdrive.in/wp-content/odgallery/2015/10/27475_avenger_cruise220.jpg"
+},
+{
+name:"Avenger 160 Street ABS",
+brand:"Bajaj",
+img:"https://tse1.mm.bing.net/th/id/OIP.4rjiMKrABBVrTBGR_C63KQHaHa?pid=Api&h=220&P=0"
+},
+{
+name:"Pulsar NS 200 ABS",
+brand:"Bajaj",
+img:"https://tse2.mm.bing.net/th/id/OIP.w2KKUYzB3Yj1xGL6yNAG9gHaE7?pid=Api&h=220&P=0"
+},
+{
+name:"Pulsar NS 160",
+brand:"Bajaj",
+img:"https://imgd.aeplcdn.com/1280x720/n/cw/ec/121519/bajaj-pulsar-ns-160-right-side-view3.jpeg?isig=0&wm=0"
+},
+{
+name:"Pulsar NS 125",
+brand:"Bajaj",
+img:"https://tse4.mm.bing.net/th/id/OIP.mb1xX-tpGDKNgkrXyOyCmwHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"Pulsar 150",
+brand:"Bajaj",
+img:"https://tse1.mm.bing.net/th/id/OIP.LX5bqisr3C0rvL4DtpwKEgHaHa?pid=Api&h=220&P=0"
+},
+{
+name:"Pulsar 125",
+brand:"Bajaj",
+img:"https://tse2.mm.bing.net/th/id/OIP.3hWKhqtgqnt7N8qhKA8cWAHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"Pulsar 125 Disc",
+brand:"Bajaj",
+img:"https://www.bikes4sale.in/pictures/default/bajaj-pulsar-125-neon-disc-single-seat/bajaj-pulsar-125-neon-disc-single-seat-pic-1.jpg"
+},
+{
+name:"Discover 125",
+brand:"Bajaj",
+img:"https://tse2.mm.bing.net/th/id/OIP.zvr-eDIfa22uahiXGXztoAHaEK?pid=Api&h=220&P=0"
+},
+{
+name:"Platina 100",
+brand:"Bajaj",
+img:"https://tse2.mm.bing.net/th/id/OIP.Bd6xdzqZ-a-iqrv3DZPXXAHaEK?pid=Api&h=220&P=0"
+},
+{
+name:"bajaj Pulsar RS 200",
+brand:"Bajaj",
+img:"https://tse2.mm.bing.net/th/id/OIP.Ck_pIDj8pWqthYhS4rwwLwHaE8?pid=Api&h=220&P=0"
+},
+{
+name:"Pulsar N160",
+brand:"Bajaj",
+img:"https://tse4.mm.bing.net/th/id/OIP._hSTGjOib-2Dp_L-ZCLbvwHaFj?pid=Api&h=220&P=0"
+},
+{
+name:"Bajaj Chetak EV",
+brand:"Bajaj",
+img:"https://tse2.mm.bing.net/th/id/OIP.7YBdwYGaJhgF5rH_l2asNQHaEK?pid=Api&h=220&P=0"
+},
+
+];
+
+let container = document.getElementById("bikeContainer");
+
+function showBikes(list){
+
+container.innerHTML="";
+
+list.forEach(b=>{
+
+container.innerHTML += `
+
+<div class="bike" data-brand="${b.brand}">
+
+<img src="${b.img}" alt="${b.name}">
+
+<h2>${b.name}</h2>
+
+<p>₹1000 / Day</p>
+
+<button>Book Now</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+showBikes(bikes);
+
+function filterBike(type){
+
+if(type=="all"){
+showBikes(bikes);
+return;
+}
+
+let filtered = bikes.filter(
+bike => bike.brand === type
+);
+
+showBikes(filtered);
+
+}
+
+</script>
+<script>
+
+
+let otp="";
+
+
+
+function openSignup(){
+
+document.getElementById("signupBox")
+.classList.add("show");
+
+
+document.getElementById("loginBox")
+.classList.remove("show");
+
+
+}
+
+
+
+function openLogin(){
+
+document.getElementById("loginBox")
+.classList.add("show");
+
+
+document.getElementById("signupBox")
+.classList.remove("show");
+
+
+}
+
+
+
+
+
+
+function otpGenerate(){
+
+otp=Math.floor(1000+Math.random()*9000);
+
+document.getElementById("otpShow")
+.innerHTML="OTP : "+otp;
+
+}
+
+
+
+
+
+function signupUser(){
+
+
+if(
+sname.value==""||
+sphone.value==""||
+otpInput.value!=otp
+){
+
+alert("Enter valid details");
+
+return;
+
+}
+
+
+let user={
+
+name:sname.value,
+
+phone:sphone.value,
+
+password:spass.value
+
+};
+
+
+localStorage.setItem(
+"user",
+JSON.stringify(user)
+);
+
+
+
+alert("Signup Success");
+
+
+signupBox.classList.remove("show");
+
+
+}
+
+
+
+
+
+
+function loginUser(){
+
+
+let user=
+JSON.parse(
+localStorage.getItem("user")
+);
+
+
+
+if(
+user &&
+user.phone==lphone.value &&
+user.password==lpass.value
+){
+
+
+profile.style.display="block";
+
+
+profileData.innerHTML=
+
+"Name : "+user.name+
+"<br>Phone : "+user.phone;
+
+
+loginBox.classList.remove("show");
+
+
+}
+
+else{
+
+loginMsg.innerHTML="Invalid Login";
+
+}
+
+
+}
+
+
+
+
+
+
+
+function filterBike(type){
+
+
+document.querySelectorAll(".bike")
+.forEach(b=>{
+
+
+if(
+type=="all" ||
+b.dataset.brand==type
+)
+
+b.style.display="block";
+
+
+else
+
+b.style.display="none";
+
+
+});
+
+
+}
+
+
+</script>
+
+
+
+</body>
+</html>
